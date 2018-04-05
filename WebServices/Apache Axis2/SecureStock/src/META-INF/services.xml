@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file was auto-generated from WSDL -->
+<!-- by the Apache Axis2 version: 1.6.1 Built on : Aug 31, 2011 (12:22:40 
+	CEST) -->
+<serviceGroup>
+	<service name="TradingService">
+		<messageReceivers>
+			<messageReceiver mep="http://www.w3.org/ns/wsdl/in-out"
+				class="com.sharekhan.trading.wsdl.TradingServiceMessageReceiverInOut" />
+		</messageReceivers>
+		<parameter name="ServiceClass">com.sharekhan.trading.wsdl.TradingServiceSkeleton
+		</parameter>
+		<parameter name="useOriginalwsdl">false</parameter>
+		<parameter name="modifyUserWSDLPortAddress">true</parameter>
+		<operation name="buy" mep="http://www.w3.org/ns/wsdl/in-out"
+			namespace="http://sharekhan.com/trading/wsdl">
+			<actionMapping>http://sharekhan.com/trading/wsdl#buy</actionMapping>
+			<outputActionMapping>http://sharekhan.com/trading/wsdl/Trading/buyResponse
+			</outputActionMapping>
+			<faultActionMapping faultName="operationFailedException">http://sharekhan.com/trading/wsdl/Trading/buy/Fault/operationFailedException
+			</faultActionMapping>
+			<faultActionMapping faultName="OperationFailedException">http://sharekhan.com/trading/wsdl/Trading/buy/Fault/operationFailedException
+			</faultActionMapping>
+			<faultActionMapping faultName="OperationFailedException_Exception">http://sharekhan.com/trading/wsdl/Trading/buy/Fault/operationFailedException
+			</faultActionMapping>
+		</operation>
+		<module ref="rampart" />
+		<wsp:Policy wsu:Id="UsernameToken"
+			xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+			xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+			<wsp:ExactlyOne>
+				<wsp:All>
+					<sp:SupportingTokens
+						xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+						<wsp:Policy>
+							<sp:UsernameToken
+								sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient" />
+						</wsp:Policy>
+					</sp:SupportingTokens>
+
+					<ramp:RampartConfig xmlns:ramp="http://ws.apache.org/rampart/policy">
+						<!-- <ramp:user>alice</ramp:user> -->
+						<ramp:passwordCallbackClass>com.sharekhan.trading.handler.PasswordCallbackHandler</ramp:passwordCallbackClass>
+					</ramp:RampartConfig>
+				</wsp:All>
+			</wsp:ExactlyOne>
+		</wsp:Policy>	
+	</service>
+</serviceGroup>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:stw="http://sharekhan.com/trading/wsdl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="trading"
+	targetNamespace="http://sharekhan.com/trading/wsdl" xmlns:stt="http://sharekhan.com/trading/types">
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://sharekhan.com/trading/types">
+			<xsd:element name="personInfo">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="ssn" type="xsd:string" />
+						<xsd:element name="name" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="quoteInfo">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="stock_nm" type="xsd:string" />
+						<xsd:element name="price" type="xsd:float" />
+						<xsd:element name="quantity" type="xsd:int" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="stockInfo">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="order_id" type="xsd:int" />
+						<xsd:element name="stock_nm" type="xsd:string" />
+						<xsd:element name="price" type="xsd:float" />
+						<xsd:element name="quantity" type="xsd:int" />
+						<xsd:element name="totalAmount" type="xsd:float" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="reason">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="error_code" type="xsd:int" />
+						<xsd:element name="error_msg" type="xsd:string" />
+						<xsd:element name="detail" type="xsd:string" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="buy">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element ref="stt:personInfo" />
+						<xsd:element ref="stt:quoteInfo" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="buyResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element ref="stt:stockInfo" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="buy">
+		<wsdl:part name="in" element="stt:buy" />
+	</wsdl:message>
+	<wsdl:message name="buyResponse">
+		<wsdl:part name="out" element="stt:buyResponse" />
+	</wsdl:message>
+	<wsdl:message name="OperationFailedException">
+		<wsdl:part name="reason" element="stt:reason" />
+	</wsdl:message>
+	<wsdl:portType name="Trading">
+		<wsdl:operation name="buy">
+			<wsdl:input message="stw:buy" />
+			<wsdl:output message="stw:buyResponse" />
+			<wsdl:fault name="operationFailedException" message="stw:OperationFailedException" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="TradingSOAPBinding" type="stw:Trading">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="buy">
+			<soap:operation soapAction="http://sharekhan.com/trading/wsdl#buy" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="operationFailedException">
+				<soap:fault />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="TradingService">
+		<wsdl:port binding="stw:TradingSOAPBinding" name="TradingSOAPPort">
+			<soap:address location="http://www.example.org/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

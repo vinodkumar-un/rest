@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:pms="http://paytm.com/mobile/service"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="paytm"
+	targetNamespace="http://paytm.com/mobile/service" xmlns:pmst="http://paytm.com/mobile/types">
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://paytm.com/mobile/types">
+			<xsd:element name="doRecharge">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="mobileInfo" type="pmst:mobileInfo" />
+						<xsd:element name="addressInfo" type="pmst:addressInfo" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:complexType name="mobileInfo">
+				<xsd:sequence>
+					<xsd:element name="mobileno" type="xsd:string" />
+					<xsd:element name="networkType" type="xsd:string" />
+					<xsd:element name="operator" type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="addressInfo">
+				<xsd:sequence>
+					<xsd:element name="addressline1" type="xsd:string" />
+					<xsd:element name="city" type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+
+			<xsd:element name="doRechargeResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="invoice" type="pmst:invoice" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:complexType name="invoice">
+				<xsd:sequence>
+					<xsd:element name="invoiceno" type="xsd:string" />
+					<xsd:element name="rechargeamt" type="xsd:float" />
+					<xsd:element name="status" type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="doRecharge">
+		<wsdl:part name="in" element="pmst:doRecharge" />
+	</wsdl:message>
+	<wsdl:message name="doRechargeResponse">
+		<wsdl:part element="pmst:doRechargeResponse" name="result" />
+	</wsdl:message>
+	<wsdl:portType name="Recharge">
+		<wsdl:operation name="doRecharge">
+			<wsdl:input message="pms:doRecharge" />
+			<wsdl:output message="pms:doRechargeResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="RechargeSOAPBinding" type="pms:Recharge">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="doRecharge">
+			<soap:operation soapAction="http://paytm.com/mobile/service#doRecharge" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="RechargeService">
+		<wsdl:port binding="pms:RechargeSOAPBinding" name="RechargeSOAPPort">
+			<soap:address location="http://www.example.org/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

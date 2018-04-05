@@ -1,0 +1,54 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from ReservationService WSDL service -->
+
+  <service name="ReservationSOAPPort" provider="java:RPC" style="rpc" use="encoded">
+      <parameter name="wsdlTargetNamespace" value="http://irct.co.in/rail/wsdl"/>
+      <parameter name="wsdlServiceElement" value="ReservationService"/>
+      <parameter name="schemaUnqualified" value="http://irct.co.in/types"/>
+      <parameter name="wsdlServicePort" value="ReservationSOAPPort"/>
+      <parameter name="className" value="in.co.irct.rail.wsdl.ReservationSOAPBindingImpl"/>
+      <parameter name="wsdlPortType" value="Reservation"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="bookTicket" qname="operNS:bookTicket" xmlns:operNS="http://irct.co.in/rail/wsdl" returnQName="result" returnType="rtns:TicketInfo" xmlns:rtns="http://irct.co.in/types" soapAction="http://irct.co.in/rail/wsdl:bookTicket" >
+        <parameter qname="tInfo" type="tns:TravelInfo" xmlns:tns="http://irct.co.in/types"/>
+        <parameter qname="pInfo" type="tns:PassengerInfo" xmlns:tns="http://irct.co.in/types"/>
+      </operation>
+      <parameter name="allowedMethods" value="bookTicket"/>
+
+      <typeMapping
+        xmlns:ns="http://irct.co.in/types"
+        qname="ns:PassengerInfo"
+        type="java:in.co.irct.types.PassengerInfo"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://irct.co.in/types"
+        qname="ns:TravelInfo"
+        type="java:in.co.irct.types.TravelInfo"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://irct.co.in/types"
+        qname="ns:TicketInfo"
+        type="java:in.co.irct.types.TicketInfo"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+  </service>
+</deployment>
